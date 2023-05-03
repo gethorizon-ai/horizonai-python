@@ -4,7 +4,7 @@ import requests
 from urllib.parse import urljoin
 
 # Base url for API calls
-base_url = "https://35.164.129.93:5000"
+base_url = "http://35.164.129.93:5000"
 
 # API keys for user to set
 api_key = None
@@ -37,7 +37,8 @@ def _delete(endpoint, headers=None):
 
 def _put(endpoint, json=None, headers=None):
     global base_url
-    response = requests.put(urljoin(base_url, endpoint), json=json, headers=headers)
+    response = requests.put(urljoin(base_url, endpoint),
+                            json=json, headers=headers)
     return _handle_response(response)
 
 
