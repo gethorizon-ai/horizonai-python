@@ -13,7 +13,7 @@ Horizon AI provides a hosted API to abstract and simplify the deployment of prod
 
 ## Documentation
 
-Please see [here](docs.gethorizon.ai) for full documentation on:
+Please see [here](https://docs.gethorizon.ai) for full documentation on:
 - Getting started (installation, setting up the environment, simple examples)
 - How-To examples (demos, integrations, helper functions)
 - Reference (full API docs)
