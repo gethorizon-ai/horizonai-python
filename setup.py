@@ -9,7 +9,7 @@ def read(file_name):
 
 setup(
     name="horizonai",
-    version="0.1.2",
+    version="0.1.3",
     packages=find_packages(),
     package_data={"": ["__init__.py"]},
     install_requires=[
