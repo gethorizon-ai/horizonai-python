@@ -1,6 +1,6 @@
 """Defines methods for Task objects."""
 
-from . import base
+from base import api_key, _get, _post, _delete, anthropic_api_key, openai_api_key
 
 
 def list_tasks():
@@ -8,7 +8,7 @@ def list_tasks():
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._get(endpoint="/api/tasks", headers=headers)
+    response = _get(endpoint="/api/tasks", headers=headers)
     return response
 
 
@@ -30,7 +30,8 @@ def create_task(
         "project_id": project_id,
         "allowed_models": allowed_models,
     }
-    response = base._post(endpoint="/api/tasks/create", json=payload, headers=headers)
+    response = _post(endpoint="/api/tasks/create",
+                     json=payload, headers=headers)
     return response
 
 
@@ -39,7 +40,7 @@ def get_task(task_id):
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._get(endpoint=f"/api/tasks/{task_id}", headers=headers)
+    response = _get(endpoint=f"/api/tasks/{task_id}", headers=headers)
     return response
 
 
@@ -48,7 +49,7 @@ def delete_task(task_id):
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._delete(endpoint=f"/api/tasks/{task_id}", headers=headers)
+    response = _delete(endpoint=f"/api/tasks/{task_id}", headers=headers)
     return response
 
 
@@ -57,7 +58,7 @@ def get_task_confirmation_details(task_id):
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._get(
+    response = _get(
         endpoint=f"/api/tasks/{task_id}/get_task_confirmation_details",
         headers=headers,
     )
@@ -75,7 +76,8 @@ def generate_task(task_id, objective):
         "openai_api_key": openai_api_key,
         "anthropic_api_key": anthropic_api_key,
     }
-    response = base._post(endpoint="/api/tasks/generate", json=payload, headers=headers)
+    response = _post(endpoint="/api/tasks/generate",
+                     json=payload, headers=headers)
     return response
 
 
@@ -90,7 +92,8 @@ def deploy_task(task_id, inputs):
         "openai_api_key": openai_api_key,
         "anthropic_api_key": anthropic_api_key,
     }
-    response = base._post(endpoint="/api/tasks/deploy", json=payload, headers=headers)
+    response = _post(endpoint="/api/tasks/deploy",
+                     json=payload, headers=headers)
     return response
 
 
@@ -100,7 +103,7 @@ def upload_evaluation_dataset(task_id, file_path):
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
     with open(file_path, "rb") as f:
-        response = base._post(
+        response = _post(
             endpoint=f"/api/tasks/{task_id}/upload_evaluation_dataset",
             files={"evaluation_dataset": f},
             headers=headers,

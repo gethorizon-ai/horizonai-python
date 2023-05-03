@@ -1,6 +1,5 @@
 """Defines methods for Project objects."""
-
-from . import base
+from base import api_key, _get, _post, _delete
 
 
 def list_projects():
@@ -8,7 +7,7 @@ def list_projects():
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._get(endpoint="/api/projects", headers=headers)
+    response = _get(endpoint="/api/projects", headers=headers)
     return response
 
 
@@ -18,7 +17,7 @@ def create_project(name):
         raise Exception("Must set Horizon API key.")
     headers = {"Content-Type": "application/json", "X-Api-Key": api_key}
     data = {"name": name}
-    response = base._post(
+    response = _post(
         endpoint="/api/projects/create",
         json=data,
         headers=headers,
@@ -31,7 +30,8 @@ def get_project(project_id):
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._get(endpoint=f"/api/projects/{project_id}", headers=headers)
+    response = _get(
+        endpoint=f"/api/projects/{project_id}", headers=headers)
     return response
 
 
@@ -40,5 +40,6 @@ def delete_project(project_id):
     if api_key == None:
         raise Exception("Must set Horizon API key.")
     headers = {"X-Api-Key": api_key}
-    response = base._delete(endpoint=f"/api/projects/{project_id}", headers=headers)
+    response = _delete(
+        endpoint=f"/api/projects/{project_id}", headers=headers)
     return response
