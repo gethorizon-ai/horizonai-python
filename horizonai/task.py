@@ -1,6 +1,6 @@
 """Defines methods for Task objects."""
 
-from base import api_key, _get, _post, _delete, anthropic_api_key, openai_api_key
+from .base import api_key, _get, _post, _delete, anthropic_api_key, openai_api_key
 
 
 def list_tasks():

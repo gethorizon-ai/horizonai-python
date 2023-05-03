@@ -1,5 +1,5 @@
 """Defines methods for Project objects."""
-from base import api_key, _get, _post, _delete
+from .base import api_key, _get, _post, _delete
 
 
 def list_projects():
