@@ -4,7 +4,7 @@ import requests
 from urllib.parse import urljoin
 
 # Base url for API calls
-base_url = "https://35.164.129.93:5000"
+base_url = "http://35.164.129.93:5000"
 
 # API keys for user to set
 api_key = None
