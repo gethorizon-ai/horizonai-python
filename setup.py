@@ -16,7 +16,7 @@ setup(
     author_email="team@gethorizon.ai",
     license="MIT",
     description="Python package and command line interface to access the Horizon AI API",
-    url="www.gethorizon.ai",
+    url="https://www.gethorizon.ai",
     download_url="https://github.com/gethorizon-ai/horizonai-python/archive/refs/tags/v0.1.0-alpha.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
