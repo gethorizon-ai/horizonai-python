@@ -1,12 +1,12 @@
 """Defines methods for User objects."""
 
-from .base import _post
+import base
 
 
 def generate_new_api_key(email, password):
     data = {"email": email, "password": password}
     headers = {"Content-Type": "application/json"}
-    response = _post(
+    response = base._post(
         endpoint="/api/users/generate_new_api_key",
         json=data,
         headers=headers,
