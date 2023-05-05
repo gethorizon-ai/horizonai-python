@@ -1,4 +1,11 @@
-from .user import *
-from .project import *
-from .task import *
-from .base import *
+from . import user
+from . import project
+from . import task
+
+# Base url for API calls
+base_url = "https://api.gethorizon.ai/"
+
+# API keys for user to set
+api_key = None
+openai_api_key = None
+anthropic_api_key = None
