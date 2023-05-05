@@ -1,6 +1,6 @@
 # Horizon AI Python Library
 
-The Horizon AI Python library provides convenient access to the Horizon AI API for applications written in the Python language.
+The Horizon AI Python library provides convenient access to a command line interface (CLI) and the Horizon AI API for applications written in the Python language.
 
 ## Installation
 Run `pip install horizonai` on the command line.
