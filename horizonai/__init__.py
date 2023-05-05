@@ -1,9 +1,9 @@
-import user
-import project
-import task
+from . import user
+from . import project
+from . import task
 
 # Base url for API calls
-base_url = "https://35.164.129.93:5000"
+base_url = "https://api.gethorizon.ai/"
 
 # API keys for user to set
 api_key = None

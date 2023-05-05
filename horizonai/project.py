@@ -1,6 +1,7 @@
 """Defines methods for Project objects."""
+
 import horizonai
-import base
+from . import base
 
 
 def list_projects():

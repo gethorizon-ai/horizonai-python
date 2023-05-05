@@ -1,6 +1,6 @@
 """Defines methods for User objects."""
 
-import base
+from . import base
 
 
 def generate_new_api_key(email, password):

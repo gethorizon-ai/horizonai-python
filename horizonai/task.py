@@ -1,7 +1,7 @@
 """Defines methods for Task objects."""
 
 import horizonai
-import base
+from . import base
 
 
 def list_tasks():
@@ -63,7 +63,7 @@ def get_task_confirmation_details(task_id):
 def generate_task(task_id, objective):
     if horizonai.api_key == None:
         raise Exception("Must set Horizon API key.")
-    if horizonai.openai_api_key == None or horizonai.anthropic_api_key == None:
+    if horizonai.openai_api_key == None and horizonai.anthropic_api_key == None:
         raise Exception("Must set LLM provider API key.")
     headers = {"Content-Type": "application/json", "X-Api-Key": horizonai.api_key}
     payload = {
