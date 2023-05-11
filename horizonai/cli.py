@@ -201,7 +201,6 @@ def list_tasks(horizonai_api_key):
     prompt="Associated project ID",
     help="The ID of the project that the task belongs to.",
 )
-# @click.option('--task_type', prompt='Task type', help='The type of the task to create.')
 @click.option(
     "--task_type", default="text_generation", help="The type of the task to create."
 )
