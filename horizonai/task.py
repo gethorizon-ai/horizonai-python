@@ -79,7 +79,7 @@ def generate_task(task_id, objective):
 def deploy_task(task_id, inputs):
     if horizonai.api_key == None:
         raise Exception("Must set Horizon API key.")
-    if horizonai.openai_api_key == None or horizonai.anthropic_api_key == None:
+    if horizonai.openai_api_key == None and horizonai.anthropic_api_key == None:
         raise Exception("Must set LLM provider API key.")
     headers = {"Content-Type": "application/json", "X-Api-Key": horizonai.api_key}
     payload = {
