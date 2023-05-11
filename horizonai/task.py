@@ -14,9 +14,9 @@ def list_tasks():
 
 def create_task(
     name: str,
-    task_type: str,
     project_id: int,
     allowed_models: list,
+    task_type: str = "text_generation",
 ):
     if horizonai.api_key == None:
         raise Exception("Must set Horizon API key.")

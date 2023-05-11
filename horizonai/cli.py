@@ -259,7 +259,10 @@ def generate_task(
     # Create task record
     try:
         task_creation_response = horizonai.task.create_task(
-            name, task_type, project_id, allowed_models
+            name,
+            project_id,
+            allowed_models,
+            task_type,
         )
         task_id = task_creation_response["task"]["id"]
     except Exception as e:
