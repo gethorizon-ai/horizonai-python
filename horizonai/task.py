@@ -14,9 +14,9 @@ def list_tasks():
 
 def create_task(
     name: str,
-    task_type: str,
     project_id: int,
     allowed_models: list,
+    task_type: str = "text_generation",
 ):
     if horizonai.api_key == None:
         raise Exception("Must set Horizon API key.")
@@ -76,10 +76,10 @@ def generate_task(task_id, objective):
     return response
 
 
-def deploy_task(task_id, inputs):
+def deploy_task(task_id, inputs, log_deployment=False):
     if horizonai.api_key == None:
         raise Exception("Must set Horizon API key.")
-    if horizonai.openai_api_key == None or horizonai.anthropic_api_key == None:
+    if horizonai.openai_api_key == None and horizonai.anthropic_api_key == None:
         raise Exception("Must set LLM provider API key.")
     headers = {"Content-Type": "application/json", "X-Api-Key": horizonai.api_key}
     payload = {
@@ -87,6 +87,7 @@ def deploy_task(task_id, inputs):
         "inputs": inputs,
         "openai_api_key": horizonai.openai_api_key,
         "anthropic_api_key": horizonai.anthropic_api_key,
+        "log_deployment": log_deployment,
     }
     response = base._post(endpoint="/api/tasks/deploy", json=payload, headers=headers)
     return response
@@ -103,3 +104,26 @@ def upload_evaluation_dataset(task_id, file_path):
             headers=headers,
         )
         return response
+
+
+def upload_output_schema(task_id, file_path):
+    if horizonai.api_key == None:
+        raise Exception("Must set Horizon API key.")
+    headers = {"X-Api-Key": horizonai.api_key}
+    with open(file_path, "rb") as f:
+        response = base._post(
+            endpoint=f"/api/tasks/{task_id}/upload_output_schema",
+            files={"output_schema": f},
+            headers=headers,
+        )
+        return response
+
+
+def view_deployment_logs(task_id):
+    if horizonai.api_key == None:
+        raise Exception("Must set Horizon API key.")
+    headers = {"X-Api-Key": horizonai.api_key}
+    response = base._get(
+        endpoint=f"/api/tasks/{task_id}/view_deployment_logs", headers=headers
+    )
+    return response
