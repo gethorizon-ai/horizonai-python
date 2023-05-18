@@ -35,14 +35,14 @@ def task():
 
 
 # User-related methods
-# Generate new Horizon API key for user
+# Generate new HorizonAI API key for user
 @click.command(name="api-key")
 @click.option("--email", prompt="Email", help="The email for the user.")
 @click.password_option(
     "--password", prompt="Password", help="The password for the user."
 )
 def generate_new_api_key(email, password):
-    """Generate a new Horizon API key."""
+    """Generate a new HorizonAI API key."""
     try:
         result = horizonai.user.generate_new_api_key(email, password)
         formatted_output = json.dumps(result, indent=4)
@@ -167,12 +167,12 @@ def list_tasks(horizonai_api_key):
 def generate_task():
     """Create a new Task with the optimal prompt-model configuration."""
     click.echo("### Step 1 - Task Overview ###")
-    # Get Horizon API key
-    if os.environ.get("HORIZON_API_KEY"):
-        horizonai.api_key = os.environ.get("HORIZON_API_KEY")
+    # Get HorizonAI API key
+    if os.environ.get("HORIZONAI_API_KEY"):
+        horizonai.api_key = os.environ.get("HORIZONAI_API_KEY")
     else:
         horizonai.api_key = click.prompt(
-            text="Horizon API key (text hidden)", hide_input=True
+            text="HorizonAI API key (text hidden)", hide_input=True
         )
 
     # Get project ID
@@ -421,10 +421,10 @@ def deploy_task(horizonai_api_key, task_id, inputs):
 # Download task deployment logs
 @click.command(name="view-logs")
 @click.option(
-    "--horizon_api_key",
-    default=os.environ.get("HORIZON_API_KEY"),
-    prompt="Horizon API Key" if not os.environ.get("HORIZON_API_KEY") else False,
-    help="The Horizon API key for the user.",
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
     hide_input=True,
 )
 @click.option(
@@ -432,9 +432,9 @@ def deploy_task(horizonai_api_key, task_id, inputs):
     prompt="Task ID",
     help="The ID of the task to view logs for.",
 )
-def view_deployment_logs(horizon_api_key, task_id):
+def view_deployment_logs(horizonai_api_key, task_id):
     """View Task deployment logs."""
-    horizonai.api_key = horizon_api_key
+    horizonai.api_key = horizonai_api_key
     try:
         result = horizonai.task.view_deployment_logs(task_id)
         formatted_output = json.dumps(result, indent=4)
