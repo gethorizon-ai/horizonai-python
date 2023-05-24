@@ -490,7 +490,7 @@ def generate_synthetic_data(
     horizonai.api_key = horizonai_api_key
     horizonai.openai_api_key = openai_api_key
     try:
-        result = horizonai.generate_synthetic_data(
+        result = horizonai.enabler.generate_synthetic_data(
             objective, num_synthetic_data, file_path
         )
         formatted_output = json.dumps(result, indent=4)

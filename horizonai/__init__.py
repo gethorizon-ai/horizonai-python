@@ -1,6 +1,7 @@
 from . import user
 from . import project
 from . import task
+from . import enabler
 
 # Base url for API calls
 base_url = "https://api.gethorizon.ai/"
