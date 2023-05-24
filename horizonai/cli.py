@@ -34,6 +34,12 @@ def task():
     pass
 
 
+@click.group()
+def enabler():
+    """Enabler methods."""
+    pass
+
+
 # User-related methods
 # Generate new HorizonAI API key for user
 @click.command(name="api-key")
@@ -443,10 +449,61 @@ def view_deployment_logs(horizonai_api_key, task_id):
         click.echo(str(e))
 
 
+# Enabler-related methods
+# Generate synthetic data
+@click.command(name="synthetic-data")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--objective",
+    prompt="Objective / instruction",
+    help="Objective or instruction statement of how to generate outputs given the inputs.",
+)
+@click.option(
+    "--file_path",
+    prompt="File Path",
+    help="The path to the file containing the original dataset.",
+)
+@click.option(
+    "--num_synthetic_data",
+    prompt="Number of synthetic data points to generate",
+    help="Number of synthetic data points to generate.",
+)
+@click.option(
+    "--openai_api_key",
+    default=os.environ.get("OPENAI_API_KEY"),
+    prompt="OpenAI API Key (text hidden)"
+    if not os.environ.get("OPENAI_API_KEY")
+    else False,
+    help="The OpenAI API key for the user.",
+    hide_input=True,
+)
+def generate_synthetic_data(
+    objective, file_path, num_synthetic_data, horizonai_api_key, openai_api_key
+):
+    """Generate synthetic data."""
+    horizonai.api_key = horizonai_api_key
+    horizonai.openai_api_key = openai_api_key
+    try:
+        result = horizonai.enabler.generate_synthetic_data(
+            objective, num_synthetic_data, file_path
+        )
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
+
 # Add CLI commands to their respective groups
 cli.add_command(user)
 cli.add_command(project)
 cli.add_command(task)
+cli.add_command(enabler)
 
 # User-related commands
 user.add_command(generate_new_api_key)
@@ -464,6 +521,9 @@ task.add_command(get_task)
 task.add_command(delete_task)
 task.add_command(deploy_task)
 task.add_command(view_deployment_logs)
+
+# Enabler-related commands
+enabler.add_command(generate_synthetic_data)
 
 # Enable auto-completion
 try:
