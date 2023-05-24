@@ -486,6 +486,7 @@ def view_deployment_logs(horizonai_api_key, task_id):
 def generate_synthetic_data(
     objective, file_path, num_synthetic_data, horizonai_api_key, openai_api_key
 ):
+    """Generate synthetic data."""
     horizonai.api_key = horizonai_api_key
     horizonai.openai_api_key = openai_api_key
     try:
