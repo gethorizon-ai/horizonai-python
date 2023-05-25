@@ -461,8 +461,8 @@ def view_deployment_logs(horizonai_api_key, task_id):
 )
 @click.option(
     "--objective",
-    prompt="Objective / instruction",
-    help="Objective or instruction statement of how to generate outputs given the inputs.",
+    prompt="Task Objective",
+    help="State the objective of the your task.",
 )
 @click.option(
     "--file_path",
