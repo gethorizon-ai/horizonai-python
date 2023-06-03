@@ -16,7 +16,6 @@ def count_rows(file_path):
         return sum(1 for row in csv.reader(f)) - 1
 
 
-@click.group(auto_envvar_prefix=None)
 @click.group()
 def cli():
     """Command line interface for Horizon AI API.\n Start with running 'horizonai user api-key' to generate a new API key."""
