@@ -16,6 +16,7 @@ def count_rows(file_path):
         return sum(1 for row in csv.reader(f)) - 1
 
 
+@click.group(auto_envvar_prefix=None)
 @click.group()
 def cli():
     """Command line interface for Horizon AI API.\n Start with running 'horizonai user api-key' to generate a new API key."""
@@ -64,8 +65,60 @@ def generate_new_api_key(email):
         click.echo(str(e))
 
 
+# Enabler-related methods
+# Generate synthetic data
+@click.command(name="synthetic-data")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get(
+        "HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--objective",
+    prompt="Task Objective",
+    help="State the objective of the your task.",
+)
+@click.option(
+    "--file_path",
+    prompt="File Path",
+    help="The path to the file containing the original dataset.",
+)
+@click.option(
+    "--num_synthetic_data",
+    prompt="Number of synthetic data points to generate",
+    help="Number of synthetic data points to generate.",
+)
+@click.option(
+    "--openai_api_key",
+    default=os.environ.get("OPENAI_API_KEY"),
+    prompt="OpenAI API Key (text hidden)"
+    if not os.environ.get("OPENAI_API_KEY")
+    else False,
+    help="The OpenAI API key for the user.",
+    hide_input=True,
+)
+def generate_synthetic_data(
+    objective, file_path, num_synthetic_data, horizonai_api_key, openai_api_key
+):
+    """Generate synthetic data."""
+    horizonai.api_key = horizonai_api_key
+    horizonai.openai_api_key = openai_api_key
+    try:
+        result = horizonai.enabler.generate_synthetic_data(
+            objective, num_synthetic_data, file_path
+        )
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
 # Project-related methods
 # List projects
+
+
 @click.command(name="list")
 @click.option(
     "--horizonai_api_key",
@@ -215,11 +268,11 @@ def generate_task():
         )
 
         if generate_synthetic_data_confirmation:
-            num_synthetic_data_input = click.prompt(
+            num_synthetic_data_input = str(click.prompt(
                 "Enter the number of synthetic data rows to generate or hit enter to generate the default number.",
                 default=num_synthetic_data,
                 show_default=True
-            )
+            ))
 
             # Get OpenAI API key
             openai_api_key = None
@@ -504,57 +557,6 @@ def view_deployment_logs(horizonai_api_key, task_id):
     horizonai.api_key = horizonai_api_key
     try:
         result = horizonai.task.view_deployment_logs(task_id)
-        formatted_output = json.dumps(result, indent=4)
-        click.echo(formatted_output)
-    except Exception as e:
-        click.echo(str(e))
-
-
-# Enabler-related methods
-# Generate synthetic data
-@click.command(name="synthetic-data")
-@click.option(
-    "--horizonai_api_key",
-    default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
-    help="The HorizonAI API key for the user.",
-    hide_input=True,
-)
-@click.option(
-    "--objective",
-    prompt="Task Objective",
-    help="State the objective of the your task.",
-)
-@click.option(
-    "--file_path",
-    prompt="File Path",
-    help="The path to the file containing the original dataset.",
-)
-@click.option(
-    "--num_synthetic_data",
-    prompt="Number of synthetic data points to generate",
-    help="Number of synthetic data points to generate.",
-)
-@click.option(
-    "--openai_api_key",
-    default=os.environ.get("OPENAI_API_KEY"),
-    prompt="OpenAI API Key (text hidden)"
-    if not os.environ.get("OPENAI_API_KEY")
-    else False,
-    help="The OpenAI API key for the user.",
-    hide_input=True,
-)
-def generate_synthetic_data(
-    objective, file_path, num_synthetic_data, horizonai_api_key, openai_api_key
-):
-    """Generate synthetic data."""
-    horizonai.api_key = horizonai_api_key
-    horizonai.openai_api_key = openai_api_key
-    try:
-        result = horizonai.enabler.generate_synthetic_data(
-            objective, num_synthetic_data, file_path
-        )
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
