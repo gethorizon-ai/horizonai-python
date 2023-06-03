@@ -18,31 +18,31 @@ def count_rows(file_path):
 
 @click.group()
 def cli():
-    """Command line interface for Horizon AI API."""
+    """Command line interface for Horizon AI API. Start with running 'horizonai user api-key' to generate an new API key."""
     pass
 
 
 @click.group()
 def user():
-    """Manage your User account."""
+    """Manage your User account and API key."""
     pass
 
 
 @click.group()
 def project():
-    """Manage your Projects."""
+    """Create and manage your Projects."""
     pass
 
 
 @click.group()
 def task():
-    """Manage your Tasks."""
+    """Create and manage your Tasks."""
     pass
 
 
 @click.group()
 def enabler():
-    """Enabler methods."""
+    """Enabler methods such as synthetic data generation."""
     pass
 
 
@@ -59,7 +59,7 @@ def generate_new_api_key(email):
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
         click.echo(
-            '\nRun "horizonai project create" command to create a project')
+            '\nRun "horizonai project create" command to create a project\n')
     except Exception as e:
         click.echo(str(e))
 
@@ -107,7 +107,7 @@ def create_project(name, horizonai_api_key):
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
         click.echo(
-            '\nRun "horizonai task create" command to create a task')
+            '\nRun "horizonai task generate" command to create a task\n')
     except Exception as e:
         click.echo(str(e))
 
