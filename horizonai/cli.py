@@ -274,7 +274,6 @@ def generate_task():
             ))
 
             # Get OpenAI API key
-            openai_api_key = None
             if os.environ.get("OPENAI_API_KEY"):
                 horizonai.openai_api_key = os.environ.get("OPENAI_API_KEY")
             else:
@@ -282,14 +281,15 @@ def generate_task():
                     text="OpenAI API Key (text hidden)", hide_input=True
                 )
 
-            # Call generate_synthetic_data function here
-            generate_synthetic_data(
-                objective,
-                dataset_file_path,
-                num_synthetic_data_input,
-                horizonai.api_key,
-                openai_api_key
-            )
+            """Generate synthetic data."""
+            try:
+                result = horizonai.enabler.generate_synthetic_data(
+                    objective, num_synthetic_data, dataset_file_path
+                )
+                formatted_output = json.dumps(result, indent=4)
+                click.echo(formatted_output)
+            except Exception as e:
+                click.echo(str(e))
         else:
             click.echo(
                 "The task requires a minimum of 15 rows of data. "
