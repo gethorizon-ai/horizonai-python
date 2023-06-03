@@ -18,7 +18,7 @@ def count_rows(file_path):
 
 @click.group()
 def cli():
-    """Command line interface for Horizon AI API. Start with running 'horizonai user api-key' to generate an new API key."""
+    """Command line interface for Horizon AI API.\n Start with running 'horizonai user api-key' to generate a new API key."""
     pass
 
 
@@ -224,11 +224,11 @@ def generate_task():
             # Get OpenAI API key
             openai_api_key = None
             if os.environ.get("OPENAI_API_KEY"):
-                openai_api_key = os.environ.get("OPENAI_API_KEY")
-                click.echo("Using OpenAI API key from environment variable.")
+                horizonai.openai_api_key = os.environ.get("OPENAI_API_KEY")
             else:
-                openai_api_key = click.prompt(
-                    "OpenAI API key (text hidden)", hide_input=True)
+                horizonai.openai_api_key = click.prompt(
+                    text="OpenAI API Key (text hidden)", hide_input=True
+                )
 
             # Call generate_synthetic_data function here
             generate_synthetic_data(
