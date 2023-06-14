@@ -2,8 +2,6 @@
 
 import horizonai
 from . import base
-import time
-import requests
 
 
 def list_tasks(verbose: bool = False):
@@ -105,24 +103,11 @@ def deploy_task(task_id, inputs, log_deployment=False):
         "anthropic_api_key": horizonai.anthropic_api_key,
         "log_deployment": log_deployment,
     }
-    for i in range(10):
-        try:
-            response = base._post(
-                endpoint="/api/tasks/deploy", json=payload, headers=headers
-            )
-            break
-        except requests.exceptions.ConnectionError:
-            # If the request fails due to a connection error (e.g., server is down),
-            # it will wait 10 seconds and then try again, upto 10 times
-            if i < 9:
-                time.sleep(10)
-        except Exception as e:
-            # If any other exception occurs, we raise it immediately without retrying
-            raise e
-    else:
-        raise Exception(
-            "Max retries exceeded. Please contact support at team@gethorizon.ai"
-        )
+    response = base._post(
+        endpoint="/api/tasks/deploy",
+        json=payload,
+        headers=headers,
+    )
     return response
 
 
