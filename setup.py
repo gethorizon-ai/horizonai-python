@@ -17,6 +17,7 @@ setup(
     install_requires=[
         "requests",
         "click",
+        "tenacity",
     ],
     entry_points={"console_scripts": ["horizonai=horizonai.cli:cli"]},
     author="Horizon Team",
