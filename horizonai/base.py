@@ -5,8 +5,13 @@ import requests
 from urllib.parse import urljoin
 
 
-def _get(endpoint, headers=None):
-    response = requests.get(urljoin(horizonai.base_url, endpoint), headers=headers)
+def _get(endpoint, json=None, data=None, headers=None):
+    response = requests.get(
+        urljoin(horizonai.base_url, endpoint),
+        json=json,
+        data=data,
+        headers=headers,
+    )
     return _handle_response(response)
 
 

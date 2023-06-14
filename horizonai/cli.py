@@ -52,14 +52,12 @@ def enabler():
 @click.option("--email", prompt="Email", help="The email for the user.")
 def generate_new_api_key(email):
     """Generate a new HorizonAI API key."""
-    password = click.prompt("Password", hide_input=True,
-                            confirmation_prompt=False)
+    password = click.prompt("Password", hide_input=True, confirmation_prompt=False)
     try:
         result = horizonai.user.generate_new_api_key(email, password)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
-        click.echo(
-            '\nRun "horizonai project create" command to create a project\n')
+        click.echo('\nRun "horizonai project create" command to create a project\n')
     except Exception as e:
         click.echo(str(e))
 
@@ -70,8 +68,7 @@ def generate_new_api_key(email):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -114,6 +111,7 @@ def generate_synthetic_data(
     except Exception as e:
         click.echo(str(e))
 
+
 # Project-related methods
 # List projects
 
@@ -122,8 +120,7 @@ def generate_synthetic_data(
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -143,8 +140,7 @@ def list_projects(horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -158,8 +154,7 @@ def create_project(name, horizonai_api_key):
         result = horizonai.project.create_project(name)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
-        click.echo(
-            '\nRun "horizonai task generate" command to create a task\n')
+        click.echo('\nRun "horizonai task generate" command to create a task\n')
     except Exception as e:
         click.echo(str(e))
 
@@ -169,8 +164,7 @@ def create_project(name, horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -193,8 +187,7 @@ def get_project(project_id, horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -218,16 +211,20 @@ def delete_project(project_id, horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
 def list_tasks(horizonai_api_key):
     """View a list of all your Tasks."""
     horizonai.api_key = horizonai_api_key
+    verbose = False
+    if click.confirm(
+        "Verbose output (show all prompts for each task, not just active prompt)?"
+    ):
+        verbose = True
     try:
-        result = horizonai.task.list_tasks()
+        result = horizonai.task.list_tasks(verbose)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -267,11 +264,13 @@ def generate_task():
         )
 
         if generate_synthetic_data_confirmation:
-            num_synthetic_data_input = str(click.prompt(
-                "Enter the number of synthetic data rows to generate or hit enter to generate the default number.",
-                default=num_synthetic_data,
-                show_default=True
-            ))
+            num_synthetic_data_input = str(
+                click.prompt(
+                    "Enter the number of synthetic data rows to generate or hit enter to generate the default number.",
+                    default=num_synthetic_data,
+                    show_default=True,
+                )
+            )
 
             # Get OpenAI API key
             if os.environ.get("OPENAI_API_KEY"):
@@ -302,8 +301,7 @@ def generate_task():
     # Get output schema, if applicable
     output_schema_file_path = None
     if click.confirm("Add JSON schema for LLM output?"):
-        output_schema_file_path = click.prompt(
-            text="Output schema file path (.json)")
+        output_schema_file_path = click.prompt(text="Output schema file path (.json)")
 
     click.echo("")
     click.echo("### Step 2/3 - Model Selection ###")
@@ -398,8 +396,7 @@ def generate_task():
     click.echo("")
     click.echo(f"1) Task objective: {objective}")
     click.echo("")
-    click.echo(
-        f"2) Input variables: {task_confirmation_details['input_variables']}")
+    click.echo(f"2) Input variables: {task_confirmation_details['input_variables']}")
     click.echo(
         "* Inferred based on the headers of all but the right-most column in your evaluation dataset."
     )
@@ -439,8 +436,7 @@ def generate_task():
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -448,8 +444,11 @@ def generate_task():
 def get_task(task_id, horizonai_api_key):
     """Get details about a specific Task."""
     horizonai.api_key = horizonai_api_key
+    verbose = False
+    if click.confirm("Verbose output (show all prompts, not just active prompt)?"):
+        verbose = True
     try:
-        result = horizonai.task.get_task(task_id)
+        result = horizonai.task.get_task(task_id, verbose)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -461,8 +460,7 @@ def get_task(task_id, horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -485,8 +483,7 @@ def delete_task(task_id, horizonai_api_key):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -528,8 +525,7 @@ def deploy_task(horizonai_api_key, task_id, inputs):
         log_deployment = True
     try:
         inputs_dict = json.loads(inputs, strict=False)
-        result = horizonai.task.deploy_task(
-            task_id, inputs_dict, log_deployment)
+        result = horizonai.task.deploy_task(task_id, inputs_dict, log_deployment)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -541,8 +537,7 @@ def deploy_task(horizonai_api_key, task_id, inputs):
 @click.option(
     "--horizonai_api_key",
     default=os.environ.get("HORIZONAI_API_KEY"),
-    prompt="HorizonAI API Key" if not os.environ.get(
-        "HORIZONAI_API_KEY") else False,
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
     help="The HorizonAI API key for the user.",
     hide_input=True,
 )
@@ -556,6 +551,61 @@ def view_deployment_logs(horizonai_api_key, task_id):
     horizonai.api_key = horizonai_api_key
     try:
         result = horizonai.task.view_deployment_logs(task_id)
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
+
+# Get the current active prompt of a task
+@click.command(name="get-active-prompt")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--task_id",
+    prompt="Task ID",
+    help="The ID of the task.",
+)
+def get_active_prompt(horizonai_api_key, task_id):
+    """Get active prompt-model configuration for task."""
+    horizonai.api_key = horizonai_api_key
+    try:
+        result = horizonai.task.get_active_prompt(task_id)
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
+
+# Set the current active prompt of a task
+@click.command(name="set-active-prompt")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--task_id",
+    prompt="Task ID",
+    help="The ID of the task.",
+)
+@click.option(
+    "--prompt_id",
+    prompt="Prompt ID",
+    help="The ID of the prompt to set as the current prompt for the task.",
+)
+def set_active_prompt(horizonai_api_key, task_id, prompt_id):
+    """Set active prompt-model configuration for task."""
+    horizonai.api_key = horizonai_api_key
+    try:
+        result = horizonai.task.set_active_prompt(task_id, prompt_id)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -584,6 +634,8 @@ task.add_command(get_task)
 task.add_command(delete_task)
 task.add_command(deploy_task)
 task.add_command(view_deployment_logs)
+task.add_command(get_active_prompt)
+task.add_command(set_active_prompt)
 
 # Enabler-related commands
 enabler.add_command(generate_synthetic_data)
