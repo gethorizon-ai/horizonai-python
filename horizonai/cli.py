@@ -218,8 +218,13 @@ def delete_project(project_id, horizonai_api_key):
 def list_tasks(horizonai_api_key):
     """View a list of all your Tasks."""
     horizonai.api_key = horizonai_api_key
+    verbose = False
+    if click.confirm(
+        "Verbose output (show all prompts for each task, not just active prompt)?"
+    ):
+        verbose = True
     try:
-        result = horizonai.task.list_tasks()
+        result = horizonai.task.list_tasks(verbose)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -445,8 +450,11 @@ def generate_task():
 def get_task(task_id, horizonai_api_key):
     """Get details about a specific Task."""
     horizonai.api_key = horizonai_api_key
+    verbose = False
+    if click.confirm("Verbose output (show all prompts, not just active prompt)?"):
+        verbose = True
     try:
-        result = horizonai.task.get_task(task_id)
+        result = horizonai.task.get_task(task_id, verbose)
         formatted_output = json.dumps(result, indent=4)
         click.echo(formatted_output)
     except Exception as e:
@@ -555,6 +563,61 @@ def view_deployment_logs(horizonai_api_key, task_id):
         click.echo(str(e))
 
 
+# Get the current active prompt of a task
+@click.command(name="get-active-prompt")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--task_id",
+    prompt="Task ID",
+    help="The ID of the task.",
+)
+def get_active_prompt(horizonai_api_key, task_id):
+    """Get active prompt-model configuration for task."""
+    horizonai.api_key = horizonai_api_key
+    try:
+        result = horizonai.task.get_active_prompt(task_id)
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
+
+# Set the current active prompt of a task
+@click.command(name="set-active-prompt")
+@click.option(
+    "--horizonai_api_key",
+    default=os.environ.get("HORIZONAI_API_KEY"),
+    prompt="HorizonAI API Key" if not os.environ.get("HORIZONAI_API_KEY") else False,
+    help="The HorizonAI API key for the user.",
+    hide_input=True,
+)
+@click.option(
+    "--task_id",
+    prompt="Task ID",
+    help="The ID of the task.",
+)
+@click.option(
+    "--prompt_id",
+    prompt="Prompt ID",
+    help="The ID of the prompt to set as the current prompt for the task.",
+)
+def set_active_prompt(horizonai_api_key, task_id, prompt_id):
+    """Set active prompt-model configuration for task."""
+    horizonai.api_key = horizonai_api_key
+    try:
+        result = horizonai.task.set_active_prompt(task_id, prompt_id)
+        formatted_output = json.dumps(result, indent=4)
+        click.echo(formatted_output)
+    except Exception as e:
+        click.echo(str(e))
+
+
 # Add CLI commands to their respective groups
 cli.add_command(user)
 cli.add_command(project)
@@ -577,6 +640,8 @@ task.add_command(get_task)
 task.add_command(delete_task)
 task.add_command(deploy_task)
 task.add_command(view_deployment_logs)
+task.add_command(get_active_prompt)
+task.add_command(set_active_prompt)
 
 # Enabler-related commands
 enabler.add_command(generate_synthetic_data)

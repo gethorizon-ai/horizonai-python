@@ -11,12 +11,13 @@ def read(file_name):
 
 setup(
     name="horizonai",
-    version="0.1.17",
+    version="0.1.18",
     packages=find_packages(),
     package_data={"": ["__init__.py"]},
     install_requires=[
         "requests",
         "click",
+        "tenacity",
     ],
     entry_points={"console_scripts": ["horizonai=horizonai.cli:cli"]},
     author="Horizon Team",
@@ -26,7 +27,7 @@ setup(
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     url="https://www.gethorizon.ai",
-    download_url="https://github.com/gethorizon-ai/horizonai-python/archive/refs/tags/v0.1.17.tar.gz",
+    download_url="https://github.com/gethorizon-ai/horizonai-python/archive/refs/tags/v0.1.18.tar.gz",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
