@@ -503,7 +503,7 @@ def deploy_task(horizonai_api_key, task_id, inputs):
         return
 
     # Get appropriate LLM provider API key
-    if model_name in ["gpt-3.5-turbo", "text-davinci-003"]:
+    if model_name in ["gpt-3.5-turbo", "gpt-3.5-turbo-16k", "text-davinci-003"]:
         if os.environ.get("OPENAI_API_KEY"):
             horizonai.openai_api_key = os.environ.get("OPENAI_API_KEY")
         else:
